@@ -174,6 +174,15 @@
             }
             return null;
         }
+        static ushort GetNearestTeamId(List<TeamChants> teamChants, TeamChants teamChant)
+        {
+            foreach (TeamChants item in teamChants)
+            {
+                if (teamChant.fileId == item.fileId && item.afsId==teamChant.afsId)
+                    return item.teamId;
+            }
+            return 0xffff;
+        }
         public static void Main(string[] args)
         {
             string language = "";
@@ -238,10 +247,11 @@ Options:
 # It means to be disable, just like any other kitserver module
 # Always leave a blank line at the end"
             );
+            List<ushort> proccesedFilesIds = new List<ushort>();
             foreach (TeamChants teamChant in teamChantsList)
             {
                 bool writeLineOnMap = false;
-                if (GetKitserverFileFromList(kitserverAFS2FS[teamChant.afsId], teamChant.fileId) != null)
+                if (GetKitserverFileFromList(kitserverAFS2FS[teamChant.afsId], teamChant.fileId) != null && !proccesedFilesIds.Contains(teamChant.fileId))
                 {
                     for (int i = 0; i < 5; i++)
                     {
@@ -259,6 +269,7 @@ Options:
                         {
                             File.Copy(ksFile.filePath, newFilePath, true);
                             writeLineOnMap = true;
+                            proccesedFilesIds.Add(teamChant.fileId);
                         }
                         catch (Exception ex)
                         {
@@ -266,20 +277,25 @@ Options:
                         }
                     }
                 }
-                else
+                else if (!proccesedFilesIds.Contains(teamChant.fileId))
                 {
                     try
                     {
                         ExtractAfsFile(teamChant, outputFolder, language);
                         writeLineOnMap = true;
+                        proccesedFilesIds.Add(teamChant.fileId);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Error trying to extract chants for teamId {teamChant.teamId} {ex.Message}");
                     }
                 }
-                if (writeLineOnMap)
-                    mapFile.WriteLine($"{teamChant.teamId}, \"{teamChant.teamId}\"");
+                if (writeLineOnMap || proccesedFilesIds.Contains(teamChant.fileId)) 
+                {
+                    ushort folderTeamId = GetNearestTeamId(teamChantsList, teamChant);
+                    mapFile.WriteLine($"{teamChant.teamId}, \"{folderTeamId}\"");
+                }
+                
 
             }
             mapFile.Close();
