@@ -293,7 +293,7 @@ Options:
                 if (writeLineOnMap || proccesedFilesIds.Contains(teamChant.fileId)) 
                 {
                     ushort folderTeamId = GetNearestTeamId(teamChantsList, teamChant);
-                    mapFile.WriteLine($"{teamChant.teamId}, \"{folderTeamId}\"");
+                    mapFile.WriteLine($"{teamChant.teamId},\"{folderTeamId}\"");
                 }
                 
 
