@@ -6,7 +6,6 @@
     using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
 
-    // Estructura para almacenar los datos de teamChants
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct TeamChants
     {
@@ -94,7 +93,6 @@
                 {
                     if (tocEntry.offset != 0)
                     {
-                        //Console.WriteLine($"yendo al offset: {tocEntry.offset} tamaño: {tocEntry.length}");
                         afsReader.BaseStream.Seek(tocEntry.offset, SeekOrigin.Begin);
                         byte[] fileData = afsReader.ReadBytes((int)tocEntry.length);
                         if (!Directory.Exists(outputPath + teamChant.teamId))
@@ -203,7 +201,6 @@
                 }
             }
 
-            // Si no se proporcionó -l o --language, mostrar ejemplo
             if (string.IsNullOrEmpty(language))
             {
                 Console.WriteLine(@"Usage: ChantsExtractor.exe.exe -l e
@@ -295,8 +292,6 @@ Options:
                     ushort folderTeamId = GetNearestTeamId(teamChantsList, teamChant);
                     mapFile.WriteLine($"{teamChant.teamId},\"{folderTeamId}\"");
                 }
-                
-
             }
             mapFile.Close();
             Console.WriteLine("Extraction complete!");
