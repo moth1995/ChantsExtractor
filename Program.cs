@@ -213,9 +213,9 @@ Options:
 
             List<ExeFile> exeFiles = new List<ExeFile> 
             {
-                new ExeFile("pes5.exe", 0x6DCED8, 221),
-                new ExeFile("we9.exe", 0x6DCED8, 221),
-                new ExeFile("we9lek.exe", 0x6DF128, 221),
+                new ExeFile("pes5.exe", 0x6DF128, 221),
+                new ExeFile("we9.exe", 0x6DF128, 221),
+                new ExeFile("we9lek.exe", 0x6DCED8, 221),
                 new ExeFile("pes6.exe", 0x7AEE20, 274),
             };
 
